@@ -130,7 +130,7 @@ const chart = ({data1, temperature, setTemperature, tempArray, setTempArray, ico
     }
     
       
-    },[temperature,tempArray])
+    },[temperature])
 
 
 

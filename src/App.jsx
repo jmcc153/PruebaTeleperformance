@@ -9,6 +9,7 @@ function App() {
   const [temp, setTemp] = useState([])
   const [icon, setIcon] = useState('')
   const [coord, setCoord] = useState({});
+  const [coordarray, setCoordArray] = useState([])
   const [city, setCity] = useState([]);
   const [search, setSearch] = useState("");
   const searchInput = useRef(null);
@@ -33,11 +34,13 @@ function App() {
   const dataCity = useCity(API_City);
 
   const handleCity = (data) => {
-    setCity([...city, data]);
-    setCoord({ lat: data.lat, lon: data.lon });
-    console.log(icon)
+    if(!city.includes(data)){
+      setCity([...city, data]);
+      setCoord({ lat: data.lat, lon: data.lon });
+      setCoordArray([...coordarray,{lat:data.lat, lon:data.lon}]);
+    }
 
-  };
+      };
 
   const handleEliminar = () => {
 /*     console.log(datasetPie.datasets)
@@ -92,8 +95,7 @@ function App() {
         <div className="container-city">
           {filterCity.map((data) => (
             <div className="searchcity">
-              <p><b>City - State:</b><br></br> {data.name} - {data.state}</p>
-        
+              <p><b>City - State:</b><br></br> {data.name} - {data.state}</p>        
               <button className="btn-temperature" onClick={() => handleCity(data)}>Ver Temperatura</button>
 
             </div>
@@ -119,7 +121,7 @@ function App() {
                     <img src={`http://openweathermap.org/img/wn/${icon[i]?.icon}@2x.png`}/><p>{icon[i]?.description}</p>
                     </div>
                     <p><b>Location:</b></p>
-                    <div><iframe width="383" height="300"src={`https://maps.google.com/maps/@${item.lat},${item.lon},15z`} frameBorder="0" scrolling="no" marginHeight="0" marginWidth="0"></iframe></div>
+                    <div><iframe width="383" height="300"src={`https://maps.google.com/maps/@${item.lat},${item.lon},10z`} frameBorder="0" scrolling="no" marginHeight="0" marginWidth="0"></iframe></div>
                 {/* <button onClick={() => handleEliminar(item)}>Eliminar</button> */}
               </div>
             ))}
@@ -129,8 +131,6 @@ function App() {
           {city.length != 0 ? (
             <div className="chart">
               <button onClick={handleEliminar}>Limpiar</button>
-
-  
                   <Chart
                   data1={city}
                   temperature={temperature}
